@@ -9,8 +9,6 @@ function App() {
   const [shortUrl, setShortUrl] = useState("");
   const [data, setData] = useState([]);
 
-  console.log(longUrl, shortUrl);
-
   const handleSubmit = async (event) => {
     event.preventDefault();
     let data = await fetch("https://sooditk.ml/create", {
@@ -22,35 +20,36 @@ function App() {
       }),
     });
     data = await data.json();
-    console.log(data);
-    setData(data?.message);
+    setData(data);
   };
 
   return (
-    <div>
-      <Navbar />
-      <div className="flex my-auto content-center">
-        <form className="flex my-auto mx-auto flex-col content-center">
-          <div>
+    <div className="flex flex-col items-center h-screen w-screen">
+      <div className="w-screen">
+        <Navbar />
+      </div>
+      <div className="flex-1 flex flex-col justify-center items-center">
+        <form className="flex-col content-center">
+          <div className="mb-5">
             <label
               htmlFor="long_url"
               className="block text-sm font-medium text-gray-700"
             >
-              Long Url
+              Long Url<span className="text-red-600">*</span>
             </label>
             <div className="mt-1 relative rounded-md shadow-sm">
               <input
                 type="text"
                 name="long_url"
-                required
                 id="long_url"
+                required
                 onChange={(e) => setLongUrl(e.target.value)}
-                className="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-7 pr-12 sm:text-sm border-gray-300 rounded-md"
-                placeholder="0.00"
+                className="focus:ring-indigo-500 ring-indigo-300 border-indigo-300 focus:border-indigo-500 block w-full pl-7 pr-12 py-3 sm:text-sm rounded-md"
+                placeholder="Enter Long URL"
               />
             </div>
           </div>
-          <div>
+          <div className="mb-5">
             <label
               htmlFor="short"
               className="block text-sm font-medium text-gray-700"
@@ -60,19 +59,43 @@ function App() {
             <div className="mt-1 relative rounded-md shadow-sm">
               <input
                 type="text"
-                required
                 name="short"
                 id="short"
                 onChange={(e) => setShortUrl(e.target.value)}
-                className="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-7 pr-12 sm:text-sm border-gray-300 rounded-md"
-                placeholder="0.00"
+                className="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-7 pr-12 py-3 sm:text-sm border-gray-300 rounded-md"
+                placeholder="Optional"
               />
             </div>
           </div>
-          <div>{data && <>{data}</>}</div>
+          <div>
+            {data && (
+              <>
+                {data.status === "Error" && (
+                  <div className="p-4 bg-red-300 rounded-lg">
+                    Is Not a Valid Url!
+                  </div>
+                )}
+                {data.status === "Error!" && (
+                  <div className="p-4 bg-cyan-300 rounded-lg">
+                    Short Url Already Exits!
+                  </div>
+                )}
+                {data.status === "success" && (
+                  <div className="p-4 bg-green-300 rounded-lg">
+                    <div>{data.message}</div>
+                    <a
+                      href={`https://${data.message}`}
+                      rel="noreferrer"
+                      target="_blank"
+                    >{`https://${data.message}`}</a>
+                  </div>
+                )}
+              </>
+            )}
+          </div>
           <button
             onClick={(e) => handleSubmit(e)}
-            className="px-4 py-2 bg-gray-800 rounded-lg text-white"
+            className="px-4 py-2 bg-gray-800 mt-5 rounded-lg text-white"
           >
             Submit
           </button>

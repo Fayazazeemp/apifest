@@ -19,12 +19,15 @@ export default function Navbar() {
               </div>
               <div className="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start">
                 <div className="flex-shrink-0 flex items-center">
-                  <img
+                  {/* <img
                     className="block lg:hidden h-8 w-auto"
                     src="https://tailwindui.com/img/logos/workflow-mark-indigo-500.svg"
                     alt="Workflow"
-                  />
-                  <div className="hidden lg:block h-8 w-auto text-white font-bold text-3xl">
+                  /> */}
+                  <div className="block lg:hidden h-8 w-auto font-mono font-extrabold text-white text-3xl">
+                    Beelink
+                  </div>
+                  <div className="hidden lg:block font-mono font-extrabold h-8 w-auto text-white text-3xl">
                     Beelink
                   </div>
                   {/* <img
