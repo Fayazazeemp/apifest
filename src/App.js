@@ -13,17 +13,17 @@ function App() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    await axios
-      .post("https://sooditk.ml", {
-        body: {
-          long_url: longUrl,
-          short: shortUrl,
-        },
-      })
-      .then((res) => {
-        console.log(res);
-        setData(res.data);
-      });
+    let data = await fetch("https://sooditk.ml/create", {
+      method: "post",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        long_url: longUrl,
+        short: shortUrl,
+      }),
+    });
+    data = await data.json();
+    console.log(data);
+    setData(data?.message);
   };
 
   return (
@@ -69,13 +69,7 @@ function App() {
               />
             </div>
           </div>
-          <div>
-            {data && (
-              <>
-                <p>{JSON.stringify(data, null, 2)}</p>
-              </>
-            )}
-          </div>
+          <div>{data && <>{data}</>}</div>
           <button
             onClick={(e) => handleSubmit(e)}
             className="px-4 py-2 bg-gray-800 rounded-lg text-white"
